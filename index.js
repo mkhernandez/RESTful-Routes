@@ -1,27 +1,28 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const { v4: uuid } = require('uuid');
 const log = console.log;
 const port = 5000;
 const localHost = 'localhost';
 const comments = [
     {   
-        id: 1,
+        id: uuid(),
         username: 'Todd',
         comment: 'lol that is so funny!'
     },
     {
-        id: 2,
+        id: uuid(),
         username: 'Skyler',
         comment: 'I like to go birdwatching with my dog'
     },
     {
-        id: 3,
+        id: uuid(),
         username: 'Sk8erBoi',
         comment: 'Plz delete your account, Todd'
     },
     {
-        id: 4,
+        id: uuid(),
         username: 'onlysayswoof',
         comment: 'woof woof woof'
     }
@@ -51,14 +52,14 @@ app.get('/comments/new', (req, res) => {
 // Create route. Create a new comment and redirect
 app.post('/comments', (req, res) => {
     const {username, comment} = req.body;
-    comments.push({username, comment});
+    comments.push({username, comment, id: uuid()});
     res.redirect('/comments');
 });
 
 // Show route. This route will get a specific comment based on the id
 app.get('/comments/:id', (req, res) => {
     const {id} = req.params; // id is in the req.params
-    const comment = comments.find(c => c.id === parseInt(id)); // getting the comment matching hard coded data
+    const comment = comments.find(c => c.id === id); // getting the comment matching hard coded data
     res.render('comments/show', {...comment});
 });
 
