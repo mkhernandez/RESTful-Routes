@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
-const app = express();
 const { v4: uuid } = require('uuid');
+const methodOverride = require('method-override');
+const app = express();
 const log = console.log;
 const port = 5000;
 const localHost = 'localhost';
@@ -39,6 +40,10 @@ app.use(express.urlencoded({extended: true}));
 // body parser for json. Must use this if incoming request is json data
 app.use(express.json());
 
+// Using method-override. This will enable us to use a patch request as a post method so that the 
+// browser can complete our request
+app.use(methodOverride('_method'));
+
 // Index route. Example of getting all comments. GET request
 app.get('/comments', (req, res) => {
     res.render('comments/index', {comments});
@@ -63,14 +68,19 @@ app.get('/comments/:id', (req, res) => {
     res.render('comments/show', {comment});
 });
 
+// Edit route. Get request to get the edit a comment form.
+app.get('/comments/:id/edit', (req, res) => {
+    const {id} = req.params;
+    const comment = comments.find(c => c.id === id);
+    res.render('comments/edit', {comment});
+});
+
 // Patch route. This route is for updating a portion of something. Use Put if you want to 
 // update everything. This is best practice
 app.patch('/comments/:id', (req, res) => {
     const {id} = req.params;
     const newCommentText = req.body.comment;
-    log(newCommentText);
     const foundComment = comments.find(c => c.id === id);
-    log(foundComment);
     foundComment.comment = newCommentText;
     res.redirect('/comments');
 });
