@@ -34,9 +34,21 @@ app.use(express.urlencoded({extended: true}));
 // body parser for json. Must use this if incoming request is json data
 app.use(express.json());
 
-// Index route. Example of getting all comments.
+// Index route. Example of getting all comments. GET request
 app.get('/comments', (req, res) => {
     res.render('comments/index', {comments});
+});
+
+// New route. Get a new comment form. GET request
+app.get('/comments/new', (req, res) => {
+    res.render('comments/new');
+});
+
+// Create route. Create a new comment and redirect
+app.post('/comments', (req, res) => {
+    const {username, comment} = req.body;
+    comments.push({username, comment});
+    res.redirect('/comments');
 });
 
 app.get('/tacos', (req, res) => {
