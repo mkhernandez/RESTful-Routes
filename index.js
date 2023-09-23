@@ -6,7 +6,7 @@ const app = express();
 const log = console.log;
 const port = 5000;
 const localHost = 'localhost';
-const comments = [
+let comments = [
     {   
         id: uuid(),
         username: 'Todd',
@@ -82,6 +82,13 @@ app.patch('/comments/:id', (req, res) => {
     const newCommentText = req.body.comment;
     const foundComment = comments.find(c => c.id === id);
     foundComment.comment = newCommentText;
+    res.redirect('/comments');
+});
+
+// Delete route. This route is for deleting something. In our case to delete a comment
+app.delete('/comments/:id', (req, res) => {
+    const {id} = req.params;
+    comments = comments.filter(c => c.id != id);
     res.redirect('/comments');
 });
 
