@@ -9,6 +9,11 @@
     <h1>Show Comment Page</h1>
     <h2><%= comment.id %> <%= comment.username %> <%= comment.comment %></h2>
     <a href="/comments">Back to all comments</a>
+    <br>
     <a href="/comments/<%= comment.id %>/edit">Edit comment</a>
+    <form action="/comments/<%= comment.id %>?_method=DELETE" method="post">
+        <br>
+        <button>Delete Comment</button>
+    </form>
 </body>
 </html>
