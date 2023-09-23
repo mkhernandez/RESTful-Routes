@@ -60,7 +60,19 @@ app.post('/comments', (req, res) => {
 app.get('/comments/:id', (req, res) => {
     const {id} = req.params; // id is in the req.params
     const comment = comments.find(c => c.id === id); // getting the comment matching hard coded data
-    res.render('comments/show', {...comment});
+    res.render('comments/show', {comment});
+});
+
+// Patch route. This route is for updating a portion of something. Use Put if you want to 
+// update everything. This is best practice
+app.patch('/comments/:id', (req, res) => {
+    const {id} = req.params;
+    const newCommentText = req.body.comment;
+    log(newCommentText);
+    const foundComment = comments.find(c => c.id === id);
+    log(foundComment);
+    foundComment.comment = newCommentText;
+    res.redirect('/comments');
 });
 
 app.get('/tacos', (req, res) => {
